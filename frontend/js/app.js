@@ -133,3 +133,77 @@ async function loadAdminStats() {
         document.getElementById('d_doadores').textContent = data.totalDoadores;
     } catch (_) { }
 }
+
+// ============================================================
+// FAMÍLIAS — CADASTRO
+// ============================================================
+async function submitFamilia(e) {
+    e.preventDefault();
+    hideAlert('alertFamilia'); hideAlert('alertFamiliaErr');
+
+    const body = {
+        nome: document.getElementById('f_nome').value.trim(),
+        cpf: document.getElementById('f_cpf').value.trim(),
+        endereco: document.getElementById('f_endereco').value.trim(),
+        num_pessoas: document.getElementById('f_num_pessoas').value,
+        renda: document.getElementById('f_renda').value || null,
+        telefone: document.getElementById('f_telefone').value.trim(),
+        email: document.getElementById('f_email').value.trim() || null,
+    };
+
+    const btn = document.getElementById('btnSubmitFamilia');
+    btn.disabled = true; btn.textContent = 'Enviando...';
+
+    try {
+        const res = await fetch(`${API}/familias`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(body),
+        });
+        const data = await res.json();
+        if (!res.ok) { showAlert('alertFamiliaErr', data.error); return; }
+        showAlert('alertFamilia', null, true);
+        document.getElementById('formFamilia').reset();
+        loadPublicStats();
+    } catch (_) {
+        showAlert('alertFamiliaErr', 'Erro de conexão. Tente novamente.');
+    } finally {
+        btn.disabled = false; btn.textContent = 'Enviar cadastro';
+    }
+}
+
+// ============================================================
+// DOADORES — CADASTRO
+// ============================================================
+async function submitDoador(e) {
+    e.preventDefault();
+    hideAlert('alertDoador'); hideAlert('alertDoadorErr');
+
+    const body = {
+        nome: document.getElementById('d_nome').value.trim(),
+        tipo: document.getElementById('d_tipo').value,
+        email: document.getElementById('d_email').value.trim(),
+        telefone: document.getElementById('d_telefone').value.trim(),
+        qtd_cestas: document.getElementById('d_cestas').value,
+    };
+
+    const btn = document.getElementById('btnSubmitDoador');
+    btn.disabled = true; btn.textContent = 'Processando...';
+
+    try {
+        const res = await fetch(`${API}/doadores`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(body),
+        });
+        const data = await res.json();
+        if (!res.ok) { showAlert('alertDoadorErr', data.error); return; }
+        showAlert('alertDoador', null, true);
+        document.getElementById('formDoador').reset();
+        loadPublicStats();
+    } catch (_) {
+        showAlert('alertDoadorErr', 'Erro de conexão. Tente novamente.');
+    } finally {
+        btn.disabled = false; btn.textContent = '✨ Confirmar doação';
+    }
+}
