@@ -506,7 +506,6 @@ a {
 .sobre-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    /* Mantém obrigatoriamente dois em cima e dois embaixo */
     gap: 1.5rem;
     margin-top: 2rem;
 }
@@ -578,4 +577,102 @@ a {
     color: rgba(255, 255, 255, 0.95);
     margin: 0;
     line-height: 1.5;
+}
+
+/* === LOGIN === */
+.login-container {
+    min-height: calc(100vh - 64px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem 1.5rem;
+    background: var(--gray-50);
+}
+
+.login-card {
+    background: #fff;
+    border-radius: var(--radius);
+    padding: 2.5rem;
+    width: 100%;
+    max-width: 420px;
+    box-shadow: var(--shadow-lg);
+    border: 1px solid var(--gray-200);
+}
+
+.login-logo {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--green);
+    margin-bottom: 0.5rem;
+}
+
+.login-card h3 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 0.25rem;
+}
+
+.login-sub {
+    font-size: 0.875rem;
+    color: var(--gray-500);
+    margin-bottom: 1.5rem;
+}
+
+.login-hint {
+    margin-top: 1rem;
+    font-size: 0.8rem;
+    color: var(--gray-400);
+    text-align: center;
+}
+
+/* === ADMIN PANEL === */
+.admin-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.75rem 1.5rem;
+    background: #fff;
+    border-bottom: 1px solid var(--gray-200);
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.admin-logo {
+    font-weight: 700;
+    color: var(--green);
+    font-size: 1rem;
+    margin-right: auto;
+}
+
+.admin-nav {
+    display: flex;
+    gap: 0.25rem;
+    flex-wrap: wrap;
+}
+
+.admin-tab {
+    padding: 0.4rem 0.875rem;
+    border-radius: 8px;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--gray-600);
+    transition: background .2s, color .2s;
+}
+
+.admin-tab:hover,
+.admin-tab.active {
+    background: var(--green-bg);
+    color: var(--green);
+}
+
+.admin-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+}
+
+.admin-content h2 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 1.5rem;
 }
