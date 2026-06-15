@@ -1,11 +1,447 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Fome Zero Conectada</title>
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet" />
 </head>
+
 <body>
-    
+
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <a href="#" class="nav-logo" onclick="showSection('home')">🌱 Fome Zero <strong>Conectada</strong></a>
+            <div class="nav-links" id="navLinks">
+                <a href="#" onclick="showSection('home')">Início</a>
+                <a href="#" onclick="showSection('familia')">Cadastrar Família</a>
+                <a href="#" onclick="showSection('doador')">Área do Doador</a>
+                <a href="#" onclick="showSection('sobre')">Sobre</a>
+                <a href="#" onclick="showSection('admin')" class="nav-admin" id="adminLink">Painel Admin</a>
+                <a href="#" onclick="openLogin()" class="nav-btn" id="btnLogin">Entrar</a>
+                <a href="#" onclick="logout()" class="nav-btn nav-btn-outline" id="btnLogout"
+                    style="display:none">Sair</a>
+            </div>
+            <button class="nav-toggle" onclick="toggleMenu()">☰</button>
+        </div>
+    </nav>
+
+    <section id="section-home" class="section active">
+
+        <div class="hero">
+            <div class="hero-badge">ODS 2 · Fome Zero</div>
+            <h1>Conectando solidariedade<br /><span class="hero-gradient">e esperança</span></h1>
+            <p class="hero-sub">Uma plataforma que une famílias que precisam de apoio alimentar com doadores e ONGs que
+                desejam transformar vidas. Juntos, vamos erradicar a fome.</p>
+            <div class="hero-btns">
+                <button class="btn-primary" onclick="showSection('familia')">Cadastre-se para receber ajuda</button>
+                <button class="btn-outline" onclick="showSection('doador')">Doe agora</button>
+            </div>
+            <div class="hero-stats">
+                <div class="stat-card">
+                    <span class="stat-icon">👨‍👩‍👧‍👦</span>
+                    <span class="stat-num" id="statFamilias">0</span>
+                    <span class="stat-label">Famílias cadastradas</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-icon">📦</span>
+                    <span class="stat-num" id="statCestas">0</span>
+                    <span class="stat-label">Cestas doadas</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-icon">🤝</span>
+                    <span class="stat-num" id="statDoadores">0</span>
+                    <span class="stat-label">Doadores parceiros</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="como-funciona">
+            <h2>Como funciona</h2>
+            <div class="steps">
+                <div class="step">
+                    <div class="step-num">1</div>
+                    <h3>Família se cadastra</h3>
+                    <p>A família preenche o formulário de cadastro com seus dados e necessidades.</p>
+                </div>
+                <div class="step">
+                    <div class="step-num">2</div>
+                    <h3>ONG avalia</h3>
+                    <p>Nossa equipe analisa o cadastro e aprova as famílias elegíveis para receber cestas.</p>
+                </div>
+                <div class="step">
+                    <div class="step-num">3</div>
+                    <h3>Doador contribui</h3>
+                    <p>Pessoas físicas ou jurídicas realizam doações de cestas básicas pela plataforma.</p>
+                </div>
+                <div class="step">
+                    <div class="step-num">4</div>
+                    <h3>Entrega confirmada</h3>
+                    <p>As cestas são distribuídas e a entrega é registrada e confirmada no sistema.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="cta-banner">
+            <div class="cta-content">
+                <h2>Faça parte dessa rede de solidariedade</h2>
+                <p>Cada cesta doada representa dignidade, saúde e esperança para uma família brasileira.</p>
+                <div class="cta-btns">
+                    <button class="btn-primary" onclick="showSection('doador')">Quero doar cestas</button>
+                    <button class="btn-white-outline" onclick="showSection('sobre')">Saiba mais sobre o projeto</button>
+                </div>
+            </div>
+        </div>
+
+    </section>
+
+    <section id="section-familia" class="section">
+        <div class="form-container">
+            <h2>Cadastro de Família</h2>
+            <p class="form-sub">Preencha os dados abaixo para solicitar o recebimento de cestas básicas.</p>
+
+            <div class="alert alert-success" id="alertFamilia" style="display:none">
+                ✅ Cadastro enviado com sucesso! Nossa equipe entrará em contato em breve.
+            </div>
+            <div class="alert alert-error" id="alertFamiliaErr" style="display:none"></div>
+
+            <form id="formFamilia" onsubmit="submitFamilia(event)">
+                <div class="form-group">
+                    <label>Nome completo *</label>
+                    <input type="text" id="f_nome" placeholder="Digite seu nome completo" required />
+                </div>
+                <div class="form-group">
+                    <label>CPF *</label>
+                    <input type="text" id="f_cpf" placeholder="000.000.000-00" maxlength="14" required />
+                </div>
+                <div class="form-group">
+                    <label>Endereço completo *</label>
+                    <input type="text" id="f_endereco" placeholder="Rua, número, bairro, cidade" required />
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Número de pessoas na família *</label>
+                        <input type="number" id="f_num_pessoas" min="1" placeholder="Ex: 4" required />
+                    </div>
+                    <div class="form-group">
+                        <label>Renda mensal aproximada (R$)</label>
+                        <input type="number" id="f_renda" min="0" step="0.01" placeholder="Ex: 800.00" />
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Telefone / WhatsApp *</label>
+                        <input type="tel" id="f_telefone" placeholder="(71) 9 9999-0000" required />
+                    </div>
+                    <div class="form-group">
+                        <label>E-mail (opcional)</label>
+                        <input type="email" id="f_email" placeholder="seuemail@email.com" />
+                    </div>
+                </div>
+                <button type="submit" class="btn-primary btn-full" id="btnSubmitFamilia">Enviar cadastro</button>
+            </form>
+        </div>
+    </section>
+
+    <section id="section-doador" class="section">
+        <div class="form-container">
+            <h2>Área do Doador</h2>
+            <p class="form-sub">Sua doação transforma vidas. Registre sua contribuição abaixo.</p>
+
+            <div class="alert alert-success" id="alertDoador" style="display:none">
+                💚 Obrigado pela sua contribuição! Você está fazendo a diferença.
+            </div>
+            <div class="alert alert-error" id="alertDoadorErr" style="display:none"></div>
+
+            <form id="formDoador" onsubmit="submitDoador(event)">
+                <div class="form-group">
+                    <label>Nome / Razão Social *</label>
+                    <input type="text" id="d_nome" placeholder="Seu nome ou nome da empresa" required />
+                </div>
+                <div class="form-group">
+                    <label>Tipo de doador *</label>
+                    <select id="d_tipo" required>
+                        <option value="">Selecione...</option>
+                        <option value="Pessoa Física">Pessoa Física</option>
+                        <option value="Pessoa Jurídica">Pessoa Jurídica</option>
+                        <option value="ONG / Associação">ONG / Associação</option>
+                    </select>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>E-mail *</label>
+                        <input type="email" id="d_email" placeholder="email@exemplo.com" required />
+                    </div>
+                    <div class="form-group">
+                        <label>Telefone *</label>
+                        <input type="tel" id="d_telefone" placeholder="(71) 9 9999-0000" required />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Quantidade de cestas que deseja doar *</label>
+                    <input type="number" id="d_cestas" min="1" placeholder="Ex: 10" required />
+                </div>
+                <button type="submit" class="btn-primary btn-full" id="btnSubmitDoador">✨ Confirmar doação</button>
+            </form>
+        </div>
+    </section>
+
+    <section id="section-sobre" class="section">
+        <div class="sobre-container">
+            <h2>Sobre o Projeto</h2>
+            <p class="form-sub">Conheça a missão e os valores por trás do Fome Zero Conectada.</p>
+
+            <div class="sobre-grid">
+
+                <div class="sobre-card">
+                    <div class="sobre-icon">🌍</div>
+                    <h3>ODS 2 — Fome Zero</h3>
+                    <p>O Objetivo de Desenvolvimento Sustentável nº 2 da ONU tem como meta acabar com a fome, alcançar a
+                        segurança alimentar, melhorar a nutrição e promover a agricultura sustentável até 2030.</p>
+                    <p>O Fome Zero Conectada é uma iniciativa direta de apoio a essa meta, conectando quem precisa com
+                        quem pode ajudar de forma eficiente e transparente.</p>
+                </div>
+
+                <div class="sobre-card">
+                    <div class="sobre-icon">🎯</div>
+                    <h3>Nossa missão</h3>
+                    <p>Criar uma ponte digital entre famílias em situação de insegurança alimentar e doadores
+                        comprometidos com a transformação social.</p>
+                    <p>Acreditamos que a tecnologia pode e deve ser usada para reduzir desigualdades e ampliar o impacto
+                        de ações solidárias.</p>
+                </div>
+
+                <div class="sobre-card">
+                    <div class="sobre-icon">👩‍💻</div>
+                    <h3>Equipe de desenvolvimento</h3>
+                    <p>Este projeto foi desenvolvido por <strong>Matheus Correia</strong>, estudante do curso superior
+                        de Análise e Desenvolvimento de Sistemas (ADS) na Faculdade Uninter, como parte de um trabalho
+                        acadêmico com impacto social real.</p>
+                    <ul class="sobre-list">
+                        <li>🎓 Turma de ADS — 2025/2027</li>
+                        <li>📍 Desenvolvido com JavaScript, Node.js, Express e SQLite</li>
+                        <li>💡 Inspirado pelos princípios da ODS 2</li>
+                    </ul>
+                </div>
+
+                <div class="sobre-card">
+                    <div class="sobre-icon">📬</div>
+                    <h3>Contato e redes</h3>
+                    <ul class="sobre-list">
+                        <li>✉️ contato@fomezeroconectada.org.br</li>
+                        <li>📱 (71) 9 9999-0000</li>
+                        <li>🌐 fomezeroconectada.org.br</li>
+                        <li>📸 @fomezeroconectada</li>
+                    </ul>
+                </div>
+
+            </div>
+            <div class="ods-banner">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a1/SDG_2.svg/200px-SDG_2.svg.png"
+                    alt="ODS 2" />
+                <div class="ods-banner-text">
+                    <strong>Agenda 2030 — ONU</strong>
+                    <p>Este projeto está alinhado com o ODS 2 da ONU, que visa erradicar a fome e promover a segurança
+                        alimentar em todo o mundo.</p>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <section id="section-admin" class="section">
+
+        <div id="adminLogin" class="login-container">
+            <div class="login-card">
+                <div class="login-logo">🌱 Fome Zero</div>
+                <h3>Painel Administrativo</h3>
+                <p class="login-sub">Acesso restrito para ONGs e gestores</p>
+                <div class="alert alert-error" id="alertLogin" style="display:none"></div>
+                <form onsubmit="doLogin(event)">
+                    <div class="form-group">
+                        <label>E-mail</label>
+                        <input type="email" id="loginEmail" value="admin@fomezero.org" required />
+                    </div>
+                    <div class="form-group">
+                        <label>Senha</label>
+                        <input type="password" id="loginSenha" value="admin123" required />
+                    </div>
+                    <button type="submit" class="btn-primary btn-full">Entrar</button>
+                </form>
+                <p class="login-hint">Credenciais padrão: admin@fomezero.org / admin123</p>
+            </div>
+        </div>
+
+        <div id="adminPanel" style="display:none">
+            <div class="admin-header">
+                <div class="admin-logo">🌱 Fome Zero</div>
+                <nav class="admin-nav">
+                    <a href="#" onclick="adminTab('dashboard')" class="admin-tab active" data-tab="dashboard">📊
+                        Dashboard</a>
+                    <a href="#" onclick="adminTab('familias')" class="admin-tab" data-tab="familias">👨‍👩‍👧‍👦
+                        Famílias</a>
+                    <a href="#" onclick="adminTab('doadores')" class="admin-tab" data-tab="doadores">💰 Doadores</a>
+                    <a href="#" onclick="adminTab('entregas')" class="admin-tab" data-tab="entregas">📦 Entregas</a>
+                </nav>
+                <button class="btn-outline-sm" onclick="logout()">Sair</button>
+            </div>
+
+            <div id="tab-dashboard" class="admin-content">
+                <h2>Dashboard</h2>
+                <div class="dashboard-grid">
+                    <div class="dash-card">
+                        <span class="dash-num" id="d_totalFamilias">-</span>
+                        <span class="dash-label">Famílias cadastradas</span>
+                    </div>
+                    <div class="dash-card green">
+                        <span class="dash-num" id="d_aprovadas">-</span>
+                        <span class="dash-label">Famílias aprovadas</span>
+                    </div>
+                    <div class="dash-card yellow">
+                        <span class="dash-num" id="d_pendentes">-</span>
+                        <span class="dash-label">Aguardando aprovação</span>
+                    </div>
+                    <div class="dash-card blue">
+                        <span class="dash-num" id="d_cestas">-</span>
+                        <span class="dash-label">Cestas prometidas</span>
+                    </div>
+                    <div class="dash-card purple">
+                        <span class="dash-num" id="d_entregas">-</span>
+                        <span class="dash-label">Entregas realizadas</span>
+                    </div>
+                    <div class="dash-card orange">
+                        <span class="dash-num" id="d_doadores">-</span>
+                        <span class="dash-label">Doadores parceiros</span>
+                    </div>
+                </div>
+            </div>
+
+            <div id="tab-familias" class="admin-content" style="display:none">
+                <h2>Famílias cadastradas</h2>
+                <div class="table-wrap">
+                    <table class="data-table" id="tblFamilias">
+                        <thead>
+                            <tr>
+                                <th>Nome</th>
+                                <th>CPF</th>
+                                <th>Pessoas</th>
+                                <th>Telefone</th>
+                                <th>Status</th>
+                                <th>Data</th>
+                                <th>Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tbodyFamilias">
+                            <tr>
+                                <td colspan="7" class="empty">Carregando...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div id="tab-doadores" class="admin-content" style="display:none">
+                <h2>Doadores</h2>
+                <div class="table-wrap">
+                    <table class="data-table" id="tblDoadores">
+                        <thead>
+                            <tr>
+                                <th>Nome</th>
+                                <th>Tipo</th>
+                                <th>E-mail</th>
+                                <th>Cestas</th>
+                                <th>Data</th>
+                                <th>Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tbodyDoadores">
+                            <tr>
+                                <td colspan="6" class="empty">Carregando...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div id="tab-entregas" class="admin-content" style="display:none">
+                <div class="tab-header">
+                    <h2>Entregas</h2>
+                    <button class="btn-primary btn-sm" onclick="openEntregaModal()">+ Registrar entrega</button>
+                </div>
+                <div class="table-wrap">
+                    <table class="data-table" id="tblEntregas">
+                        <thead>
+                            <tr>
+                                <th>Família</th>
+                                <th>Data</th>
+                                <th>Status</th>
+                                <th>Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tbodyEntregas">
+                            <tr>
+                                <td colspan="4" class="empty">Carregando...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div id="modalEntrega" class="modal-overlay" style="display:none">
+        <div class="modal-box">
+            <h3>Registrar nova entrega</h3>
+            <div class="alert alert-error" id="alertEntregaErr" style="display:none"></div>
+            <form onsubmit="submitEntrega(event)">
+                <div class="form-group">
+                    <label>Selecionar família aprovada</label>
+                    <select id="e_familia" required>
+                        <option value="">Selecione uma família...</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Observação (opcional)</label>
+                    <textarea id="e_obs" rows="3" placeholder="Ex: Entrega realizada no endereço cadastrado"></textarea>
+                </div>
+                <div class="modal-btns">
+                    <button type="button" class="btn-outline" onclick="closeEntregaModal()">Cancelar</button>
+                    <button type="submit" class="btn-primary">Registrar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="footer-container">
+            <div>
+                <div class="footer-logo">🌱 Fome Zero Conectada</div>
+                <p>Conectando solidariedade e esperança desde 2026.</p>
+            </div>
+            <div>
+                <h4>Navegação</h4>
+                <ul>
+                    <li><a href="#" onclick="showSection('home')">Início</a></li>
+                    <li><a href="#" onclick="showSection('familia')">Cadastrar Família</a></li>
+                    <li><a href="#" onclick="showSection('doador')">Doe agora</a></li>
+                    <li><a href="#" onclick="showSection('sobre')">Sobre o projeto</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4>Alinhado com</h4>
+                <p>ODS 2 — Fome Zero e Agricultura Sustentável</p>
+                <p>Agenda 2030 · ONU</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            © 2026 Fome Zero Conectada · Desenvolvido por Matheus Correia
+        </div>
+    </footer>
+
+    <script src="js/app.js"></script>
 </body>
 </html>
