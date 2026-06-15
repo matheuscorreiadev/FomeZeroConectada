@@ -339,3 +339,54 @@ async function deleteEntrega(id) {
         loadAdminStats();
     } catch (_) { alert('Erro ao remover'); }
 }
+
+// ============================================================
+// MODAL — REGISTRAR ENTREGA
+// ============================================================
+async function openEntregaModal() {
+    const sel = document.getElementById('e_familia');
+    sel.innerHTML = '<option value="">Carregando famílias...</option>';
+    document.getElementById('modalEntrega').style.display = 'flex';
+    hideAlert('alertEntregaErr');
+
+    try {
+        const res = await apiFetch(`${API}/familias`);
+        const rows = await res.json();
+        const aprovadas = rows.filter(r => r.status === 'aprovada');
+        if (!aprovadas.length) {
+            sel.innerHTML = '<option value="">Nenhuma família aprovada</option>';
+        } else {
+            sel.innerHTML = '<option value="">Selecione uma família...</option>' +
+                aprovadas.map(r => `<option value="${r.id}">${esc(r.nome)} (${r.num_pessoas} pessoas)</option>`).join('');
+        }
+    } catch (_) {
+        sel.innerHTML = '<option value="">Erro ao carregar</option>';
+    }
+}
+
+function closeEntregaModal() {
+    document.getElementById('modalEntrega').style.display = 'none';
+    document.getElementById('e_familia').value = '';
+    document.getElementById('e_obs').value = '';
+}
+
+async function submitEntrega(e) {
+    e.preventDefault();
+    hideAlert('alertEntregaErr');
+
+    const familia_id = document.getElementById('e_familia').value;
+    const observacao = document.getElementById('e_obs').value.trim();
+
+    if (!familia_id) { showAlert('alertEntregaErr', 'Selecione uma família'); return; }
+
+    try {
+        const res = await apiFetch(`${API}/entregas`, 'POST', { familia_id: parseInt(familia_id), observacao });
+        const data = await res.json();
+        if (!res.ok) { showAlert('alertEntregaErr', data.error); return; }
+        closeEntregaModal();
+        loadEntregas();
+        loadAdminStats();
+    } catch (_) {
+        showAlert('alertEntregaErr', 'Erro ao registrar entrega');
+    }
+}
