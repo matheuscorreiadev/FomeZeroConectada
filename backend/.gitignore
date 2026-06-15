@@ -1,0 +1,37 @@
+# Ignore directory
+node_modules/
+
+# Ignore log files
+logs
+*.log
+# Ignore environment variable files
+.env
+# Ignore build output
+dist/
+build/
+# Ignore coverage reports
+coverage/
+# Ignore temporary files
+tmp/
+# Ignore IDE specific files
+.vscode/
+.idea/
+# Ignore OS generated files
+.DS_Store
+Thumbs.db
+# Ignore npm debug files
+npm-debug.log*
+# Ignore yarn debug filesyarn-debug.log*
+yarn-error.log*
+# Ignore lock files (if you want to ignore them, otherwise keep them for consistency)
+package-lock.json
+yarn.lock
+# Ignore test output
+test-output/
+# Ignore compiled files
+*.tsbuildinfo
+# Ignore Docker files
+docker-compose.override.yml
+Dockerfile.dev
+# Ignore coverage reportscoverage/
+coverage/
