@@ -76,3 +76,18 @@ function showAdminPanel() {
     adminTab('dashboard');
     updateNavAuth(true);
 }
+
+// ============================================================
+// ADMIN TABS
+// ============================================================
+function adminTab(tab) {
+    document.querySelectorAll('.admin-content').forEach(c => c.style.display = 'none');
+    document.querySelectorAll('.admin-tab').forEach(t => t.classList.remove('active'));
+    document.getElementById('tab-' + tab).style.display = '';
+    document.querySelector(`.admin-tab[data-tab="${tab}"]`)?.classList.add('active');
+
+    if (tab === 'dashboard') loadAdminStats();
+    if (tab === 'familias') loadFamilias();
+    if (tab === 'doadores') loadDoadores();
+    if (tab === 'entregas') loadEntregas();
+}
