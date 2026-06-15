@@ -453,3 +453,17 @@ document.addEventListener('input', e => {
         e.target.value = v;
     }
 });
+
+// Close modal on overlay click
+document.getElementById('modalEntrega').addEventListener('click', e => {
+    if (e.target === document.getElementById('modalEntrega')) closeEntregaModal();
+});
+
+// ============================================================
+// INIT
+// ============================================================
+document.addEventListener('DOMContentLoaded', () => {
+    loadPublicStats();
+    showSection('home');
+    if (authToken) updateNavAuth(true);
+});
