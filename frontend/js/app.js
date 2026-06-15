@@ -442,3 +442,14 @@ function fmtDate(str) {
         return new Date(str).toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit', year: 'numeric' });
     } catch (_) { return str; }
 }
+
+// CPF mask
+document.addEventListener('input', e => {
+    if (e.target.id === 'f_cpf') {
+        let v = e.target.value.replace(/\D/g, '').slice(0, 11);
+        v = v.replace(/(\d{3})(\d)/, '$1.$2')
+            .replace(/(\d{3})(\d)/, '$1.$2')
+            .replace(/(\d{3})(\d{1,2})$/, '$1-$2');
+        e.target.value = v;
+    }
+});
