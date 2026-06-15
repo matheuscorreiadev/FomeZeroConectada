@@ -207,3 +207,58 @@ async function submitDoador(e) {
         btn.disabled = false; btn.textContent = '✨ Confirmar doação';
     }
 }
+
+// ============================================================
+// ADMIN — FAMÍLIAS TABLE
+// ============================================================
+async function loadFamilias() {
+    const tbody = document.getElementById('tbodyFamilias');
+    tbody.innerHTML = '<tr><td colspan="7" class="empty">Carregando...</td></tr>';
+    try {
+        const res = await apiFetch(`${API}/familias`);
+        const rows = await res.json();
+        if (!rows.length) {
+            tbody.innerHTML = '<tr><td colspan="7" class="empty">Nenhuma família cadastrada ainda.</td></tr>';
+            return;
+        }
+        tbody.innerHTML = rows.map(r => `
+      <tr>
+        <td><strong>${esc(r.nome)}</strong></td>
+        <td>${esc(r.cpf)}</td>
+        <td>${r.num_pessoas}</td>
+        <td>${esc(r.telefone)}</td>
+        <td>${badgeStatus(r.status)}</td>
+        <td>${fmtDate(r.created_at)}</td>
+        <td>
+          ${r.status === 'pendente' ? `
+            <button class="action-btn approve" onclick="updateStatus(${r.id},'aprovada')">✔ Aprovar</button>
+            <button class="action-btn reject" onclick="updateStatus(${r.id},'rejeitada')">✘ Rejeitar</button>
+          ` : `
+            <button class="action-btn" onclick="updateStatus(${r.id},'pendente')">↺ Pendente</button>
+          `}
+          <button class="action-btn delete" onclick="deleteFamilia(${r.id})">🗑</button>
+        </td>
+      </tr>
+    `).join('');
+    } catch (_) {
+        tbody.innerHTML = '<tr><td colspan="7" class="empty">Erro ao carregar dados.</td></tr>';
+    }
+}
+
+async function updateStatus(id, status) {
+    try {
+        await apiFetch(`${API}/familias/${id}/status`, 'PATCH', { status });
+        loadFamilias();
+        loadAdminStats();
+    } catch (_) { alert('Erro ao atualizar status'); }
+}
+
+async function deleteFamilia(id) {
+    if (!confirm('Remover esta família do sistema?')) return;
+    try {
+        await apiFetch(`${API}/familias/${id}`, 'DELETE');
+        loadFamilias();
+        loadAdminStats();
+        loadPublicStats();
+    } catch (_) { alert('Erro ao remover'); }
+}
