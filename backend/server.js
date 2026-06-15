@@ -25,7 +25,7 @@ app.use('/api/entregas', entregaRoutes);
 app.use('/api/stats', statsRoutes);
 
 // Fallback to index.html
-app.get('*', (req, res) => {
+app.get('/*any', (req, res) => {
     res.sendFile(path.join(__dirname, '../frontend/index.html'));
 });
 
