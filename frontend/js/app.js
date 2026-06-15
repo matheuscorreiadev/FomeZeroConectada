@@ -91,3 +91,45 @@ function adminTab(tab) {
     if (tab === 'doadores') loadDoadores();
     if (tab === 'entregas') loadEntregas();
 }
+
+// ============================================================
+// STATS (PUBLIC)
+// ============================================================
+async function loadPublicStats() {
+    try {
+        const res = await fetch(`${API}/stats/publico`);
+        const data = await res.json();
+        animateNum('statFamilias', data.familias);
+        animateNum('statCestas', data.cestas);
+        animateNum('statDoadores', data.doadores);
+    } catch (_) { }
+}
+
+function animateNum(id, target) {
+    const el = document.getElementById(id);
+    if (!el) return;
+    let start = 0;
+    const duration = 800;
+    const step = target / (duration / 16);
+    const interval = setInterval(() => {
+        start = Math.min(start + step, target);
+        el.textContent = Math.round(start);
+        if (start >= target) clearInterval(interval);
+    }, 16);
+}
+
+// ============================================================
+// ADMIN STATS
+// ============================================================
+async function loadAdminStats() {
+    try {
+        const res = await apiFetch(`${API}/stats/admin`);
+        const data = await res.json();
+        document.getElementById('d_totalFamilias').textContent = data.totalFamilias;
+        document.getElementById('d_aprovadas').textContent = data.aprovadas;
+        document.getElementById('d_pendentes').textContent = data.pendentes;
+        document.getElementById('d_cestas').textContent = data.cestasPrometidas;
+        document.getElementById('d_entregas').textContent = data.entregasRealizadas;
+        document.getElementById('d_doadores').textContent = data.totalDoadores;
+    } catch (_) { }
+}
