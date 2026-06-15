@@ -773,3 +773,111 @@ a {
     color: var(--gray-400);
     padding: 2rem !important;
 }
+
+/* === BADGES === */
+.badge {
+    display: inline-block;
+    padding: 0.2rem 0.6rem;
+    border-radius: 100px;
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+.badge-green {
+    background: #e8f5e9;
+    color: var(--green-dark);
+}
+
+.badge-yellow {
+    background: var(--yellow-light);
+    color: var(--yellow);
+}
+
+.badge-red {
+    background: var(--red-light);
+    color: var(--red);
+}
+
+.badge-blue {
+    background: var(--blue-light);
+    color: var(--blue);
+}
+
+/* === TAB HEADER === */
+.tab-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1.5rem;
+}
+
+.tab-header h2 {
+    margin: 0;
+}
+
+/* === ACTION BUTTONS === */
+.action-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0.3rem 0.5rem;
+    border-radius: 6px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    transition: background .2s;
+}
+
+.action-btn:hover {
+    background: var(--gray-100);
+}
+
+.action-btn.approve {
+    color: var(--green);
+}
+
+.action-btn.reject {
+    color: var(--red);
+}
+
+.action-btn.delete {
+    color: var(--gray-400);
+}
+
+.action-btn.delete:hover {
+    color: var(--red);
+    background: var(--red-light);
+}
+
+/* === MODAL === */
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 200;
+    background: rgba(0, 0, 0, .5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+}
+
+.modal-box {
+    background: #fff;
+    border-radius: var(--radius);
+    padding: 2rem;
+    width: 100%;
+    max-width: 480px;
+    box-shadow: var(--shadow-lg);
+}
+
+.modal-box h3 {
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin-bottom: 1.25rem;
+}
+
+.modal-btns {
+    display: flex;
+    gap: 0.75rem;
+    justify-content: flex-end;
+    margin-top: 1rem;
+}
