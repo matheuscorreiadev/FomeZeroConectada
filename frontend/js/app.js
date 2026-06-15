@@ -262,3 +262,80 @@ async function deleteFamilia(id) {
         loadPublicStats();
     } catch (_) { alert('Erro ao remover'); }
 }
+
+// ============================================================
+// ADMIN — DOADORES TABLE
+// ============================================================
+async function loadDoadores() {
+    const tbody = document.getElementById('tbodyDoadores');
+    tbody.innerHTML = '<tr><td colspan="6" class="empty">Carregando...</td></tr>';
+    try {
+        const res = await apiFetch(`${API}/doadores`);
+        const rows = await res.json();
+        if (!rows.length) {
+            tbody.innerHTML = '<tr><td colspan="6" class="empty">Nenhum doador registrado ainda.</td></tr>';
+            return;
+        }
+        tbody.innerHTML = rows.map(r => `
+      <tr>
+        <td><strong>${esc(r.nome)}</strong></td>
+        <td><span class="badge badge-blue">${esc(r.tipo)}</span></td>
+        <td>${esc(r.email)}</td>
+        <td><strong>${r.qtd_cestas}</strong></td>
+        <td>${fmtDate(r.created_at)}</td>
+        <td>
+          <button class="action-btn delete" onclick="deleteDoador(${r.id})">🗑</button>
+        </td>
+      </tr>
+    `).join('');
+    } catch (_) {
+        tbody.innerHTML = '<tr><td colspan="6" class="empty">Erro ao carregar dados.</td></tr>';
+    }
+}
+
+async function deleteDoador(id) {
+    if (!confirm('Remover este doador?')) return;
+    try {
+        await apiFetch(`${API}/doadores/${id}`, 'DELETE');
+        loadDoadores();
+        loadAdminStats();
+        loadPublicStats();
+    } catch (_) { alert('Erro ao remover'); }
+}
+
+// ============================================================
+// ADMIN — ENTREGAS TABLE
+// ============================================================
+async function loadEntregas() {
+    const tbody = document.getElementById('tbodyEntregas');
+    tbody.innerHTML = '<tr><td colspan="4" class="empty">Carregando...</td></tr>';
+    try {
+        const res = await apiFetch(`${API}/entregas`);
+        const rows = await res.json();
+        if (!rows.length) {
+            tbody.innerHTML = '<tr><td colspan="4" class="empty">Nenhuma entrega registrada ainda.</td></tr>';
+            return;
+        }
+        tbody.innerHTML = rows.map(r => `
+      <tr>
+        <td><strong>${esc(r.familia_nome)}</strong></td>
+        <td>${fmtDate(r.created_at)}</td>
+        <td><span class="badge badge-green">${esc(r.status)}</span></td>
+        <td>
+          <button class="action-btn delete" onclick="deleteEntrega(${r.id})">🗑</button>
+        </td>
+      </tr>
+    `).join('');
+    } catch (_) {
+        tbody.innerHTML = '<tr><td colspan="4" class="empty">Erro ao carregar dados.</td></tr>';
+    }
+}
+
+async function deleteEntrega(id) {
+    if (!confirm('Remover esta entrega?')) return;
+    try {
+        await apiFetch(`${API}/entregas/${id}`, 'DELETE');
+        loadEntregas();
+        loadAdminStats();
+    } catch (_) { alert('Erro ao remover'); }
+}
