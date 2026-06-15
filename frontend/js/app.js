@@ -390,3 +390,55 @@ async function submitEntrega(e) {
         showAlert('alertEntregaErr', 'Erro ao registrar entrega');
     }
 }
+
+// ============================================================
+// HELPERS
+// ============================================================
+async function apiFetch(url, method = 'GET', body = null) {
+    const opts = {
+        method,
+        headers: { 'Content-Type': 'application/json' },
+    };
+    if (authToken) opts.headers['Authorization'] = `Bearer ${authToken}`;
+    if (body) opts.body = JSON.stringify(body);
+    const res = await fetch(url, opts);
+    if (res.status === 401) { logout(); throw new Error('Unauthorized'); }
+    return res;
+}
+
+function showAlert(id, msg, isSuccess = false) {
+    const el = document.getElementById(id);
+    if (!el) return;
+    if (!isSuccess && msg) el.textContent = msg;
+    el.style.display = '';
+}
+
+function hideAlert(id) {
+    const el = document.getElementById(id);
+    if (el) el.style.display = 'none';
+}
+
+function esc(str) {
+    if (!str) return '';
+    return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;');
+}
+
+function badgeStatus(s) {
+    const map = {
+        pendente: 'badge-yellow',
+        aprovada: 'badge-green',
+        rejeitada: 'badge-red',
+    };
+    return `<span class="badge ${map[s] || ''}">${s}</span>`;
+}
+
+function fmtDate(str) {
+    if (!str) return '-';
+    try {
+        return new Date(str).toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit', year: 'numeric' });
+    } catch (_) { return str; }
+}
