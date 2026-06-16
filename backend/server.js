@@ -1,6 +1,10 @@
+const path = require('path'); // 1. Declarado aqui no topo
+require('dotenv').config({ path: path.join(__dirname, '.env') });
+
 const express = require('express');
 const cors = require('cors');
-const path = require('path');
+// const path = require('path'); <-- APAGADO DAQUI PARA NÃO DUPLICAR
+
 const { initDB, getDB } = require('./database');
 const familiaRoutes = require('./routes/familias');
 const doadorRoutes = require('./routes/doadores');
@@ -34,7 +38,9 @@ initDB().then(() => {
     app.listen(PORT, () => {
         console.log(`✅ Servidor rodando em http://localhost:${PORT}`);
         console.log(`📊 Painel admin: http://localhost:${PORT}/#admin`);
-        console.log(`🔑 Credenciais: admin@fomezero.org / admin123`);
+        
+        // Exibe apenas o e-mail configurado para confirmar que o .env foi lido
+        console.log(`🔑 Admin configurado para: ${process.env.ADMIN_EMAIL || 'admin@fomezero.org'}`);
     });
 }).catch(err => {
     console.error('Erro ao inicializar banco de dados:', err);

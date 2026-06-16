@@ -1,2 +1,6 @@
 # Ignore directory
 node_modules/
+# Ignore environment variables file
+backend/.env
+
+
