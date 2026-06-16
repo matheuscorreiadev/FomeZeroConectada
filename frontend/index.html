@@ -256,25 +256,25 @@
     <section id="section-admin" class="section">
 
         <div id="adminLogin" class="login-container">
-            <div class="login-card">
-                <div class="login-logo">🌱 Fome Zero</div>
-                <h3>Painel Administrativo</h3>
-                <p class="login-sub">Acesso restrito para ONGs e gestores</p>
-                <div class="alert alert-error" id="alertLogin" style="display:none"></div>
-                <form onsubmit="doLogin(event)">
-                    <div class="form-group">
-                        <label>E-mail</label>
-                        <input type="email" id="loginEmail" value="admin@fomezero.org" required />
-                    </div>
-                    <div class="form-group">
-                        <label>Senha</label>
-                        <input type="password" id="loginSenha" value="admin123" required />
-                    </div>
-                    <button type="submit" class="btn-primary btn-full">Entrar</button>
-                </form>
-                <p class="login-hint">Credenciais padrão: admin@fomezero.org / admin123</p>
+    <div class="login-card">
+        <div class="login-logo">🌱 Fome Zero</div>
+        <h3>Painel Administrativo</h3>
+        <p class="login-sub">Acesso restrito para ONGs e gestores</p>
+        <div class="alert alert-error" id="alertLogin" style="display:none"></div>
+        <form onsubmit="doLogin(event)">
+            <div class="form-group">
+                <label>E-mail</label>
+                <input type="email" id="loginEmail" placeholder="Digite seu e-mail" required />
             </div>
-        </div>
+            <div class="form-group">
+                <label>Senha</label>
+                <input type="password" id="loginSenha" placeholder="Digite sua senha" required />
+            </div>
+            <button type="submit" class="btn-primary btn-full">Entrar</button>
+        </form>
+        <p class="login-hint">Credenciais padrão: admin@fomezero.org / admin123</p>
+    </div>
+</div>
 
         <div id="adminPanel" style="display:none">
             <div class="admin-header">
